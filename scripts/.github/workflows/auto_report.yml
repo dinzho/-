@@ -1,0 +1,38 @@
+name: 📈 Daily Stock Analysis Report
+
+on:
+  schedule:
+    # UTC 時間 08:00 (約台北時間 16:00 盤後)
+    - cron: '0 8 * * 1-5'
+  workflow_dispatch: # 支援手動觸發
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: 📊 Run Analysis Script
+        run: python scripts/generate_report.py
+
+      - name: 📤 Commit & Push Reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-generate daily stock reports [skip ci]"
+          git push
