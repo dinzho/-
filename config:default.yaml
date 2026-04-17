@@ -1,0 +1,24 @@
+# 預設分析標的清單
+tickers:
+  - symbol: "MSFT"
+    exchange: "NASDAQ"
+    name: "Microsoft Corporation"
+  - symbol: "NOW"
+    exchange: "NYSE"
+    name: "ServiceNow Inc"
+  - symbol: "ORCL"
+    exchange: "NYSE"
+    name: "Oracle Corporation"
+
+# 技術參數設定
+parameters:
+  sma_periods: [20, 50, 200]
+  fib_levels: [0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0]
+  lookback_days: 365
+  rsi_period: 14
+
+# 輸出設定
+output:
+  directory: "reports"
+  date_format: "%Y-%m-%d"
+  language: "zh-TW"
